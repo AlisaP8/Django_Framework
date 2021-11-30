@@ -20,16 +20,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from mainapp import views as mainapp
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', mainapp.index, name='index'),
-    path('contacts/', mainapp.contact, name='contact'),
+    path('contact/', mainapp.contact, name='contact'),
     path('products/', include('mainapp.urls', namespace='products')),
 
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 

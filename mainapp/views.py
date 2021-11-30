@@ -24,3 +24,4 @@ def products(request, pk=None):
         'title': 'Продукты',
     }
     return render(request, 'mainapp/products.html', context=context)
+
