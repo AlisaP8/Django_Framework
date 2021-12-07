@@ -7,4 +7,6 @@
         {{ login_form.as_p }}
         <input type="submit" class="btn btn-primary" value="Войти">
     </form>
+    <hr>
+    <a href="{% url 'auth:register' %}">Регистрация</a>
 {% endblock %}
