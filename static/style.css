@@ -704,6 +704,9 @@ html, body {
 	left: 1185px;
     text-decoration: none;
     color: #555;
+    padding-left: 27px;
+    background-repeat: no-repeat;
+    font-weight: bold;
 }
 
 .basket span {
@@ -1512,6 +1515,7 @@ td:first-child {
 }
 
 .details-products {
+    display: flex;
 	padding-left: 98px;
 	padding-right: 98px;
 	margin-top: 98px;
