@@ -4,8 +4,13 @@ from mainapp.models import Product
 
 
 def basket(request):
-    content = {}
-    return render(request, 'basketapp/basket.html', content)
+    baskets_list = Basket.objects.filter(user=request.user)
+
+    context = {
+        'baskets': baskets_list,
+    }
+
+    return render(request, 'basketapp/basket.html', context)
 
 
 def add(request, pk):
