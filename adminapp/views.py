@@ -54,11 +54,21 @@ def user_update(request, pk):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def user_delete(request):
-    context = {
+def user_delete(request, pk):
+    current_user = get_object_or_404(ShopUser, pk=pk)
 
+    if request.method == 'POST':
+        if current_user.is_active:
+            current_user.is_active = False
+        else:
+            current_user.is_active = True
+        current_user.save()
+        return HttpResponseRedirect(reverse('adminapp:user_list'))
+
+    context = {
+        'object': current_user,
     }
-    return render(request, '', context)
+    return render(request, 'adminapp/user_delete.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
