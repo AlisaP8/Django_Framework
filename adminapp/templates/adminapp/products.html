@@ -1,6 +1,6 @@
 {% extends 'adminapp/base.html' %}
 {% load static %}
-
+{% load my_tags %}
 {% block content %}
 <div class="products_list">
     <button class="new_product">
@@ -12,7 +12,7 @@
     {% for object in object_list %}
     <div class="product_record">
         <img
-                src="/media/{{object.image|default:'products_images/default.jpg'}}"
+                src="{{ object.image|media_for_products }}"
                 alt="{{ object.name }}">
         <div class="product_name">
             {{ object.name|title }}
@@ -41,7 +41,7 @@
             <p>{{ object.quantity }}</p>
         </div>
         <div class="product_desc">
-            {{ object.short_desc|title }}
+<!--            {{ object.short_desc|title }}-->
         </div>
     </div>
     {% endfor%}

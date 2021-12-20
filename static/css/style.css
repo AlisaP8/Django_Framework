@@ -695,8 +695,8 @@ html, body {
 }
 .basket {
 	display: block;
-	width: 23px;
-	height: 23px;	
+	width: 100px;
+	height: 23px;
 	background-image: url(/static/img/basket.png);
 	position: absolute;
 	top: 63px;
@@ -704,6 +704,9 @@ html, body {
 	left: 1185px;
     text-decoration: none;
     color: #555;
+    font-size: 12px;
+    background-repeat: no-repeat;
+    padding-left: 27px;
 }
 
 .basket span {
@@ -1512,6 +1515,7 @@ td:first-child {
 }
 
 .details-products {
+    display: flex;
 	padding-left: 98px;
 	padding-right: 98px;
 	margin-top: 98px;
