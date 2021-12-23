@@ -4,13 +4,13 @@
 {% block content %}
 <div class="products_list">
     <button class="new_product">
-        <a href={% url 'adminapp:product_create' category.pk %}>
-        новый продукт
+        <a href="{% url 'adminapp:product_create' category.pk %}">
+            новый продукт
         </a>
     </button>
 
     {% for object in object_list %}
-    <div class="product_record">
+    <div class="product_record {% if not object.is_active %}not_active{% endif %}">
         <img
                 src="{{ object.image|media_for_products }}"
                 alt="{{ object.name }}">
@@ -19,18 +19,18 @@
         </div>
         <div class="product_actions">
             <button>
-                <a href={% url 'adminapp:product_detail' object.pk %}>
-                подробнее
+                <a href="{% url 'adminapp:product_detail' object.pk %}">
+                    подробнее
                 </a>
             </button>
             <button>
-                <a href={% url 'adminapp:product_update' object.pk %}>
-                редактировать
+                <a href="{% url 'adminapp:product_update' object.pk %}">
+                    редактировать
                 </a>
             </button>
             <button>
-                <a href={% url 'adminapp:product_delete' object.pk %}>
-                удалить
+                <a href="{% url 'adminapp:product_delete' object.pk %}">
+                    удалить
                 </a>
             </button>
         </div>
@@ -41,7 +41,7 @@
             <p>{{ object.quantity }}</p>
         </div>
         <div class="product_desc">
-<!--            {{ object.short_desc|title }}-->
+            <!--            {{ object.short_desc|title }}-->
         </div>
     </div>
     {% endfor%}

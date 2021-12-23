@@ -1,13 +1,20 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth.decorators import user_passes_test
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
 
-from adminapp.forms import ShopUserAdminEditForm
+from adminapp.forms import ShopUserAdminEditForm, ProductEditForm
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
 from mainapp.models import ProductCategory, Product
+
+
+class AccessMixin:
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -36,13 +43,9 @@ def user_create(request):
 #     return render(request, 'adminapp/users.html', context)
 
 
-class UserListView(ListView):
+class UserListView(AccessMixin, ListView):
     model = ShopUser
     template_name = 'adminapp/users.html'
-
-    @method_decorator(user_passes_test(lambda u: u.is_superuser))
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -114,13 +117,21 @@ def category_delete(request):
     return render(request, '', context)
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def product_create(request):
-    context = {
+# @user_passes_test(lambda u: u.is_superuser)
+# def product_create(request):
+#     context = {
+#
+#     }
+#     return render(request, '', context)
 
-    }
-    return render(request, '', context)
 
+class ProductCreateView(AccessMixin, CreateView):
+    model = Product
+    template_name = 'adminapp/product_form.html'
+    form_class = ProductEditForm
+
+    def get_success_url(self):
+        return reverse('adminapp:product_list', args=[self.kwargs['pk']])
 
 # @user_passes_test(lambda u: u.is_superuser)
 # def products(request, pk):
@@ -130,7 +141,8 @@ def product_create(request):
 #     }
 #     return render(request, 'adminapp/products.html', context)
 
-class ProductsListView(ListView):
+
+class ProductsListView(AccessMixin, ListView):
     model = Product
     template_name = 'adminapp/products.html'
 
@@ -143,25 +155,46 @@ class ProductsListView(ListView):
         return Product.objects.filter(category__pk=self.kwargs.get('pk'))
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def product_update(request):
-    context = {
+# @user_passes_test(lambda u: u.is_superuser)
+# def product_update(request):
+#     context = {
+#
+#     }
+#     return render(request, '', context)
 
-    }
-    return render(request, '', context)
+class ProductUpdateView(AccessMixin, CreateView):
+    model = Product
+    template_name = 'adminapp/product_form.html'
+    form_class = ProductEditForm
+
+    def get_success_url(self):
+        product_item = Product.objects.get(pk=self.kwargs['pk'])
+        return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def product_delete(request):
-    context = {
+# @user_passes_test(lambda u: u.is_superuser)
+# def product_delete(request):
+#     context = {
+#
+#     }
+#     return render(request, '', context)
 
-    }
-    return render(request, '', context)
+class ProductDeleteView(AccessMixin, DeleteView):
+    model = Product
+    template_name = 'adminapp/product_delete.html'
+
+    def get_success_url(self):
+        product_item = Product.objects.get(pk=self.kwargs['pk'])
+        return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def product_detail(request):
-    context = {
+# @user_passes_test(lambda u: u.is_superuser)
+# def product_detail(request):
+#     context = {
+#
+#     }
+#     return render(request, '', context)
 
-    }
-    return render(request, '', context)
+class ProductDetailView(AccessMixin, DetailView):
+    model = Product
+    template_name = 'adminapp/product_detail.html'

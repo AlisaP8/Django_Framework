@@ -33,5 +33,10 @@ class Product(models.Model):
         verbose_name_plural = 'продукты'
         ordering = ['name']
 
-
+    def delete(self):
+        if self.is_active:
+            self.is_active = False
+        else:
+            self.is_active = True
+        self.save()
 
