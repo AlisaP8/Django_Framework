@@ -4,7 +4,6 @@ from django.db import models
 class ProductCategory(models.Model):
     name = models.CharField(max_length=64, unique=True, verbose_name='название')
     description = models.TextField(verbose_name='описание')
-    is_active = models.BooleanField(default=0)
 
     def __str__(self):
         return f'{self.name}'
@@ -23,7 +22,6 @@ class Product(models.Model):
     description = models.TextField(verbose_name='описание', blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name='цена')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name='количество')
-    is_active = models.BooleanField(default=0)
 
     def __str__(self):
         return f'{self.name} ({self.category.name})'
@@ -33,10 +31,5 @@ class Product(models.Model):
         verbose_name_plural = 'продукты'
         ordering = ['name']
 
-    def delete(self):
-        if self.is_active:
-            self.is_active = False
-        else:
-            self.is_active = True
-        self.save()
+
 
